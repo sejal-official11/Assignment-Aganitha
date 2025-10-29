@@ -2,6 +2,12 @@
 
 
 
-html, body, #root {
-    height: 100%;
+/* small custom */
+:root {
+  --muted: #6b7280;
+}
+
+/* custom container */
+.container {
+  @apply max-w-5xl mx-auto px-4;
 }

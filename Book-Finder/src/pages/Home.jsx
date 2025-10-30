@@ -28,7 +28,6 @@ export default function Home() {
   }, [recent]);
 
   useEffect(() => {
-    // fetch only when debounced query changes and is non-empty
     if (!debouncedQuery) {
       setBooks([]);
       setNumFound(0);
@@ -51,7 +50,6 @@ export default function Home() {
         setBooks(Array.isArray(data.docs) ? data.docs : []);
         setNumFound(data.numFound || 0);
 
-        // update recent searches (keep unique, maintain order, max 8)
         setRecent((prev) => {
           const q = debouncedQuery.trim();
           if (!q) return prev;
@@ -73,60 +71,63 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <SearchBar value={query} onChange={setQuery} placeholder="Search books by title..." />
-          <div className="mt-4">
-            {loading && (
-              <div className="p-6 bg-white rounded shadow text-center text-slate-500">Loading…</div>
-            )}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2">
+        <SearchBar value={query} onChange={setQuery} placeholder="Search books by title..." />
 
-            {error && (
-              <div className="p-4 bg-red-50 text-red-700 rounded">Error: {error}</div>
-            )}
+        <div className="mt-5">
+          {loading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="bg-white rounded-lg p-4 skeleton" />
+              ))}
+            </div>
+          )}
 
-            {!loading && !error && debouncedQuery && books.length === 0 && (
-              <div className="p-6 bg-white rounded text-center text-slate-500">No results found.</div>
-            )}
+          {error && <div className="p-4 bg-red-50 text-red-700 rounded">Error: {error}</div>}
 
-            {!debouncedQuery && (
-              <div className="p-6 bg-white rounded text-center text-slate-500">
-                Try searching for a title, e.g. <strong>harry potter</strong>
+          {!loading && !error && debouncedQuery && books.length === 0 && (
+            <div className="p-6 bg-white rounded text-center text-slate-500">No results found.</div>
+          )}
+
+          {!debouncedQuery && (
+            <div className="p-6 bg-white rounded text-center text-slate-500">
+              Try searching for a title — e.g. <strong>harry potter</strong>
+            </div>
+          )}
+
+          {books.length > 0 && (
+            <>
+              <div className="mt-4 mb-2 text-sm text-slate-500 flex items-center justify-between">
+                <div>Showing {Math.min(books.length, 100)} of {numFound} results</div>
+                <div className="text-xs text-slate-400">Click a card to view details</div>
               </div>
-            )}
 
-            {books.length > 0 && (
-              <>
-                <div className="mt-4 mb-2 text-sm text-slate-500">
-                  Showing {Math.min(books.length, 100)} results — total found: {numFound}
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {books.slice(0, 30).map((b) => (
-                    <BookCard key={b.key} book={b} onView={() => setSelected(b)} />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {books.slice(0, 30).map((b) => (
+                  <BookCard key={b.key} book={b} onView={() => setSelected(b)} />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      <aside className="space-y-4">
+        <div className="glass p-4 rounded-lg">
+          <h3 className="text-sm font-medium mb-2">Recent searches</h3>
+          <RecentSearches items={recent} onClick={handleRecentClick} onClear={() => setRecent([])} />
         </div>
 
-        <aside className="space-y-4">
-          <div className="bg-white p-4 rounded shadow">
-            <h3 className="text-sm font-medium mb-2">Recent searches</h3>
-            <RecentSearches items={recent} onClick={handleRecentClick} onClear={() => setRecent([])} />
-          </div>
-
-          <div className="bg-white p-4 rounded shadow">
-            <h3 className="text-sm font-medium mb-2">Tips</h3>
-            <ul className="text-sm text-slate-500 space-y-2">
-              <li>Search by book title (try "pride and prejudice").</li>
-              <li>Click a card to view more details.</li>
-              <li>Genres are taken from the Open Library `subject` field when available.</li>
-            </ul>
-          </div>
-        </aside>
-      </div>
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h3 className="text-sm font-medium mb-2">Quick Tips</h3>
+          <ul className="text-sm text-slate-500 space-y-2">
+            <li>Use full or partial book titles for better results.</li>
+            <li>Genres shown are sourced from the Open Library `subject` field.</li>
+            <li>Click a card to view more details and open the Open Library page.</li>
+          </ul>
+        </div>
+      </aside>
 
       {selected && <BookModal book={selected} onClose={() => setSelected(null)} />}
     </div>

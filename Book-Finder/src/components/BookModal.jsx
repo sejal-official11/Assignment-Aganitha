@@ -15,25 +15,26 @@ export default function BookModal({ book, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="relative z-10 max-w-3xl w-full bg-white rounded shadow-lg overflow-auto max-h-[90vh]">
-        <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="relative z-10 max-w-4xl w-full bg-white rounded-2xl overflow-auto shadow-2xl">
+        <div className="p-6 md:p-8 grid md:grid-cols-3 gap-6">
           <div className="md:col-span-1 flex items-start justify-center">
-            <img src={cover} alt={book.title} className="w-44 h-64 object-cover rounded" onError={(e)=> e.currentTarget.src="/placeholder-cover.png"} />
+            <img src={cover} alt={book.title} className="w-44 h-64 object-cover rounded-lg" onError={(e)=> e.currentTarget.src="/placeholder-cover.png"} />
           </div>
           <div className="md:col-span-2">
-            <h2 className="text-xl font-semibold">{book.title}</h2>
+            <h2 className="text-2xl font-semibold">{book.title}</h2>
             <p className="text-sm text-slate-500 mt-1">{authors}</p>
-            <div className="mt-3 text-sm text-slate-600 space-y-2">
+
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-600">
               <div><strong>First published:</strong> {book.first_publish_year || "N/A"}</div>
               <div><strong>Edition count:</strong> {book.edition_count || "N/A"}</div>
-              <div><strong>Subjects / Genres:</strong> {subjects}</div>
-              <div><strong>Publisher:</strong> {(book.publisher || []).slice(0,3).join(", ") || "N/A"}</div>
+              <div className="sm:col-span-2"><strong>Genres:</strong> {subjects}</div>
+              <div className="sm:col-span-2"><strong>Publisher:</strong> {(book.publisher || []).slice(0,3).join(", ") || "N/A"}</div>
             </div>
 
-            <div className="mt-4 flex gap-3">
-              <a className="px-3 py-2 bg-brand-500 text-white rounded" href={`https://openlibrary.org${book.key}`} target="_blank" rel="noreferrer">Open on OpenLibrary</a>
-              <button onClick={onClose} className="px-3 py-2 border rounded">Close</button>
+            <div className="mt-6 flex gap-3">
+              <a className="px-4 py-2 bg-brand-500 text-white rounded-lg" href={`https://openlibrary.org${book.key}`} target="_blank" rel="noreferrer">Open on OpenLibrary</a>
+              <button onClick={onClose} className="px-4 py-2 border rounded-lg">Close</button>
             </div>
           </div>
         </div>

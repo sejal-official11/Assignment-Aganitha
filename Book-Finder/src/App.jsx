@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
+    <div className="min-h-screen bg-linear-to-b from-slate-50 to-slate-100 text-slate-900">
       <header className="py-8">
         <div className="container">
           <div className="flex items-center justify-between">

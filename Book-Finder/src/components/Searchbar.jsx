@@ -2,7 +2,7 @@ import React from "react";
 
 export default function SearchBar({ value, onChange, placeholder = "Search..." }) {
   return (
-    <div className="bg-gradient-to-r from-white/60 to-white/50 p-4 rounded-lg shadow-sm">
+    <div className="bg-linear-to-r from-white/60 to-white/50 p-4 rounded-lg shadow-sm">
       <label htmlFor="search" className="sr-only">Search books</label>
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2 bg-white p-2 rounded-lg shadow-sm flex-1">

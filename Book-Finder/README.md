@@ -6,6 +6,7 @@ It features a beautiful, responsive UI built with **Tailwind CSS** and includes 
 ---
 
 ## 🚀 Features
+
 -  Search books by title using Open Library API  
 -  Debounced search (no unnecessary API calls)  
 -  Stores recent searches in localStorage  
